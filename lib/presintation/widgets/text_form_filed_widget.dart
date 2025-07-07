@@ -6,8 +6,9 @@ class TextFormFiledWidget extends StatefulWidget {
   TextEditingController controller;
   String hintTxt;
   TextInputType keyType;
-  Widget ?suffIcon ;
-   TextFormFiledWidget({super.key,required this.controller,required this.hintTxt, required this.keyType, this.suffIcon});
+  Widget ? suffIcon ;
+  bool ? obscureText;
+   TextFormFiledWidget({super.key,required this.controller,required this.hintTxt, required this.keyType, this.suffIcon, this.obscureText});
 
   @override
   State<TextFormFiledWidget> createState() => _TextFormFiledWidgetState();
@@ -23,6 +24,10 @@ class _TextFormFiledWidgetState extends State<TextFormFiledWidget> {
         onTap: () {},
         controller: widget.controller,
         cursorColor: Colors.white,
+        style: TextStyle(
+          color: Colors.white
+        ),
+        obscureText: widget.obscureText ?? false,
         decoration: InputDecoration(
           filled: true,
           fillColor: ColorsManager.marron,
