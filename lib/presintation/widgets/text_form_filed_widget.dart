@@ -8,7 +8,8 @@ class TextFormFiledWidget extends StatefulWidget {
   TextInputType keyType;
   Widget ? suffIcon ;
   bool ? obscureText;
-   TextFormFiledWidget({super.key,required this.controller,required this.hintTxt, required this.keyType, this.suffIcon, this.obscureText});
+  EdgeInsetsGeometry ? contentPadding;
+   TextFormFiledWidget({super.key,required this.controller,required this.hintTxt, required this.keyType, this.suffIcon, this.obscureText,this.contentPadding});
 
   @override
   State<TextFormFiledWidget> createState() => _TextFormFiledWidgetState();
@@ -29,6 +30,7 @@ class _TextFormFiledWidgetState extends State<TextFormFiledWidget> {
         ),
         obscureText: widget.obscureText ?? false,
         decoration: InputDecoration(
+          contentPadding: widget.contentPadding,
           filled: true,
           fillColor: ColorsManager.marron,
           border: InputBorder.none,
