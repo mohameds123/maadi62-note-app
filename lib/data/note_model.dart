@@ -1,29 +1,27 @@
 class NoteModel {
-  final String headline;
+  final String headLine;
   final String description;
   final DateTime createdAt;
 
   NoteModel({
-    required this.headline,
+    required this.headLine,
     required this.description,
     required this.createdAt,
   });
 
-  // Convert object to JSON
+  factory NoteModel.fromJson(Map<String, dynamic> json) {
+    return NoteModel(
+      headLine: json['headLine'] as String,
+      description: json['description'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
-      'headline': headline,
+      'headLine': headLine,
       'description': description,
       'createdAt': createdAt.toIso8601String(),
     };
-  }
-
-  // Create object from JSON
-  factory NoteModel.fromJson(Map<String, dynamic> json) {
-    return NoteModel(
-      headline: json['headline'] ?? '',
-      description: json['description'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
-    );
   }
 }

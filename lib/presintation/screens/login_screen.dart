@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 77),
                           InkWell(
                             onTap: () {
-                              context.read<LoginCubit>().Login(userEmail: emailController.text, pass: passController.text);
+                              context.read<LoginCubit>().login(userEmail: emailController.text, pass: passController.text);
                             },
                             borderRadius: BorderRadius.circular(12),
                             child: Container(

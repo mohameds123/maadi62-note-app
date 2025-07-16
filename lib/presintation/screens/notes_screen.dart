@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/core/colors/colors_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/logic/get_note/cubit.dart';
 import 'package:note_app/presintation/screens/create_note_screen.dart';
 import 'package:note_app/presintation/screens/login_screen.dart';
 import 'package:note_app/presintation/widgets/notes_list_view.dart';
@@ -16,7 +17,9 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+  create: (context) => GetNoteCubit()..getNotes(),
+  child: Scaffold(
       backgroundColor: Colors.black,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 137),
@@ -77,10 +80,12 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
               SizedBox(height: 34),
               NotesListView(),
+
             ],
           ),
         ),
       ),
-    );
+    ),
+);
   }
 }

@@ -7,7 +7,7 @@ class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginInitialState());
 
   /// Sign Up Function with email and password using firebase auth
-  Future Login({required String userEmail, required String pass}) async {
+  Future login({required String userEmail, required String pass}) async {
     emit(LoginLoadingState());
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

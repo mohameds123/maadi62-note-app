@@ -127,7 +127,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                 onTap: () {
                                   context.read<CreateNoteCubit>().createNote(
                                     notes: NoteModel(
-                                      headline: noteAddressController.text,
+                                      headLine: noteAddressController.text,
                                       description: descController.text,
                                       createdAt: DateTime.now(),
                                     ),
