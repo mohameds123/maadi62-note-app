@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:note_app/core/colors/colors_manager.dart';
 import 'package:note_app/data/note_model.dart';
 import 'package:note_app/logic/create_note/cubit.dart';
 import 'package:note_app/logic/create_note/state.dart';
@@ -17,6 +21,28 @@ class CreateNoteScreen extends StatefulWidget {
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
   TextEditingController noteAddressController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  XFile ?selectedMedia;
+
+  Future choseMediaGallery() async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        selectedMedia = image;
+
+      });
+    }
+  }
+
+  Future choseMediaCamera() async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      setState(() {
+        selectedMedia = image;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +125,64 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                   vertical: 90,
                                 ),
                               ),
-                              SizedBox(height: 77),
+                             selectedMedia == null?  SizedBox(height: 77) : Image.file(File(selectedMedia!.path)),
+
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  showDialog(context: context, builder: (BuildContext context){
+                                    return AlertDialog(
+                                      content: Container(
+                                        height: 140,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+
+                                              child: Container(
+                                                width: 160,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  color: ColorsManager.primary
+                                                ),
+                                                child: Center(child: Text("Gallery",
+                                                style: TextStyle(
+                                                  color: Colors.white
+                                                ),
+                                                )),
+                                              ),
+                                              onTap: (){},
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            InkWell(
+
+                                              child: Container(
+                                                width: 160,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(12),
+                                                    color: ColorsManager.primary
+                                                ),
+                                                child: Center(child: Text("Camera",
+                                                  style: TextStyle(
+                                                      color: Colors.white
+                                                  ),
+                                                )),
+                                              ),
+                                              onTap: (){
+                                                choseMediaCamera();
+                                              },
+                                            ),
+
+
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
                                 borderRadius: BorderRadius.circular(12),
                                 child: Container(
                                   width: 312,
