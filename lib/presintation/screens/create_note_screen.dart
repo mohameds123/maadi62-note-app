@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,6 +35,8 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
     }
   }
 
+
+
   Future choseMediaCamera() async {
     ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: ImageSource.camera);
@@ -41,6 +44,17 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
       setState(() {
         selectedMedia = image;
       });
+    }
+  }
+  Future <String?> uploadImage (XFile image)async{
+
+    try{
+      final storage = FirebaseStorage.instance.ref().child("note_images/${DateTime.now().millisecondsSinceEpoch}.jpg");
+      await storage.putFile(File(image.path));
+      return await storage!.getDownloadURL();
+
+    }catch (e){
+      print("Uploaded Error ===========$e");
     }
   }
 
@@ -101,7 +115,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                 ),
                               ),
                               SizedBox(height: 9),
-                
+
                               TextFormFiledWidget(
                                 hintTxt: 'Enter Note Address',
                                 keyType: TextInputType.text,
