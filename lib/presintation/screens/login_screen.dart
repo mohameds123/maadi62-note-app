@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/logic/login/cubit.dart';
@@ -17,7 +18,14 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-
+  void _toggleLanguage(BuildContext context) {
+    final currentLocale = context.locale;
+    if (currentLocale.languageCode == 'en') {
+      context.setLocale(Locale('ar'));
+    } else {
+      context.setLocale(Locale('en'));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,9 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 32,
                       ),
+                      IconButton(onPressed: (){
+                        _toggleLanguage(context);
+                      }, icon: Icon(Icons.translate),color: Colors.white,),
                       Center(
                         child: Text(
-                          "Hi, Welcome Back!",
+                          "Hi, Welcome Back! ".tr(),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -73,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Email",
+                            "Email".tr(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -88,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 44),
                           Text(
-                            "Password",
+                            "Password".tr(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -139,7 +150,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 19),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              context.read<LoginCubit>().continueWithGoogle();
+                            },
                             borderRadius: BorderRadius.circular(12),
                             child: Container(
                               width: 312,

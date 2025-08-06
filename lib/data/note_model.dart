@@ -15,7 +15,7 @@ class NoteModel {
     return NoteModel(
       headLine: json['headLine'] as String,
       description: json['description'] as String,
-      imageUrl: json['imageUrl'] as String,
+      imageUrl: json['imageUrl'] ?? "" as String ,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
@@ -24,7 +24,7 @@ class NoteModel {
     return {
       'headLine': headLine,
       'description': description,
-      'imageUrl': imageUrl,
+      'imageUrl': imageUrl ?? "",
       'createdAt': createdAt.toIso8601String(),
     };
   }

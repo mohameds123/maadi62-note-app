@@ -22,7 +22,7 @@ class CreateNoteScreen extends StatefulWidget {
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
   TextEditingController noteAddressController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  XFile ?selectedMedia;
+  XFile? selectedMedia;
 
   Future choseMediaGallery() async {
     ImagePicker picker = ImagePicker();
@@ -30,12 +30,9 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
     if (image != null) {
       setState(() {
         selectedMedia = image;
-
       });
     }
   }
-
-
 
   Future choseMediaCamera() async {
     ImagePicker picker = ImagePicker();
@@ -46,14 +43,15 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
       });
     }
   }
-  Future <String?> uploadImage (XFile image)async{
 
-    try{
-      final storage = FirebaseStorage.instance.ref().child("note_images/${DateTime.now().millisecondsSinceEpoch}.jpg");
-      await storage.putFile(File(image.path));
+  Future<String?> uploadImage() async {
+    try {
+      final storage = FirebaseStorage.instance.ref().child(
+        "note_images/${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+      await storage.putFile(File(selectedMedia!.path));
       return await storage!.getDownloadURL();
-
-    }catch (e){
+    } catch (e) {
       print("Uploaded Error ===========$e");
     }
   }
@@ -139,63 +137,77 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                   vertical: 90,
                                 ),
                               ),
-                             selectedMedia == null?  SizedBox(height: 77) : Image.file(File(selectedMedia!.path)),
+                              selectedMedia == null
+                                  ? SizedBox(height: 77)
+                                  : Image.file(File(selectedMedia!.path)),
 
                               InkWell(
                                 onTap: () {
-                                  showDialog(context: context, builder: (BuildContext context){
-                                    return AlertDialog(
-                                      content: Container(
-                                        height: 140,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-
-                                              child: Container(
-                                                width: 160,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(12),
-                                                  color: ColorsManager.primary
-                                                ),
-                                                child: Center(child: Text("Gallery",
-                                                style: TextStyle(
-                                                  color: Colors.white
-                                                ),
-                                                )),
-                                              ),
-                                              onTap: (){},
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            InkWell(
-
-                                              child: Container(
-                                                width: 160,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(12),
-                                                    color: ColorsManager.primary
-                                                ),
-                                                child: Center(child: Text("Camera",
-                                                  style: TextStyle(
-                                                      color: Colors.white
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: Container(
+                                          height: 140,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              InkWell(
+                                                child: Container(
+                                                  width: 160,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                    color:
+                                                        ColorsManager.primary,
                                                   ),
-                                                )),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Gallery",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                onTap: () {},
                                               ),
-                                              onTap: (){
-                                                choseMediaCamera();
-                                              },
-                                            ),
-
-
-                                          ],
+                                              SizedBox(height: 10),
+                                              InkWell(
+                                                child: Container(
+                                                  width: 160,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                    color:
+                                                        ColorsManager.primary,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Camera",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  choseMediaCamera();
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  });
+                                      );
+                                    },
+                                  );
                                 },
                                 borderRadius: BorderRadius.circular(12),
                                 child: Container(
@@ -219,14 +231,26 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                               ),
                               SizedBox(height: 9),
                               InkWell(
-                                onTap: () {
-                                  context.read<CreateNoteCubit>().createNote(
-                                    notes: NoteModel(
-                                      headLine: noteAddressController.text,
-                                      description: descController.text,
-                                      createdAt: DateTime.now(),
-                                    ),
-                                  );
+                                onTap: () async {
+                                  if (selectedMedia != null) {
+                                    final mediaLink = await uploadImage();
+                                    context.read<CreateNoteCubit>().createNote(
+                                      notes: NoteModel(
+                                        headLine: noteAddressController.text,
+                                        description: descController.text,
+                                        createdAt: DateTime.now(),
+                                        imageUrl: mediaLink,
+                                      ),
+                                    );
+                                  } else {
+                                    context.read<CreateNoteCubit>().createNote(
+                                      notes: NoteModel(
+                                        headLine: noteAddressController.text,
+                                        description: descController.text,
+                                        createdAt: DateTime.now(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 borderRadius: BorderRadius.circular(12),
                                 child: Container(
@@ -237,7 +261,9 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                     color: Colors.white,
                                   ),
                                   child: (state is CreateNoteLoadingState)
-                                      ? Center(child: CircularProgressIndicator())
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
                                       : Center(
                                           child: Text(
                                             "Create",
