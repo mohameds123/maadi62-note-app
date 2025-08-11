@@ -15,3 +15,12 @@ class GetNoteErrorState extends GetNoteState {
   final String em ;
   GetNoteErrorState ({required this.em});
 }
+// ====== Delete states ======
+class DeleteNoteLoadingState extends GetNoteState {}
+
+class DeleteNoteSuccessState extends GetNoteState {}
+
+class DeleteNoteErrorState extends GetNoteState {
+  final String em;
+  DeleteNoteErrorState({required this.em});
+}

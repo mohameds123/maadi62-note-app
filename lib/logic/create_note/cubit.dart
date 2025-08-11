@@ -10,7 +10,8 @@ class CreateNoteCubit extends Cubit <CreateNoteState> {
   Future createNote ({required NoteModel notes})async {
     emit(CreateNoteLoadingState());
     try{
-     await FirebaseFirestore.instance.collection("notes").add(notes.toJson());
+    final setNote =  await FirebaseFirestore.instance.collection("notes").add(notes.toJson());
+    notes.noteId = setNote.id;
      emit(CreateNoteSuccessState());
       
     }catch (e){

@@ -1,10 +1,12 @@
 class NoteModel {
-  final String headLine;
-  final String description;
-  final DateTime createdAt;
-  final String? imageUrl;
+  String? noteId;
+  String headLine;
+  String description;
+  DateTime createdAt;
+  String? imageUrl;
 
   NoteModel({
+    this.noteId,
     required this.headLine,
     required this.description,
     required this.createdAt,
@@ -13,9 +15,10 @@ class NoteModel {
 
   factory NoteModel.fromJson(Map<String, dynamic> json) {
     return NoteModel(
+      noteId: json['noteId'],
       headLine: json['headLine'] as String,
       description: json['description'] as String,
-      imageUrl: json['imageUrl'] ?? "" as String ,
+      imageUrl: json['imageUrl'] ?? "",
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }

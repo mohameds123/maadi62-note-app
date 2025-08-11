@@ -4,6 +4,7 @@ import 'package:note_app/logic/get_note/cubit.dart';
 import 'package:note_app/logic/get_note/state.dart';
 
 import '../../core/colors/colors_manager.dart';
+import '../screens/note_edit_screen.dart';
 
 class NotesListView extends StatefulWidget {
   const NotesListView({super.key});
@@ -31,7 +32,9 @@ class _NotesListViewState extends State<NotesListView> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateNoteScreen(noteModel: state.notes[index])));
+                      },
                       child: Container(
                         width: 390,
                         //height: 80,
@@ -41,17 +44,27 @@ class _NotesListViewState extends State<NotesListView> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 12, top: 20, right: 12),
+                              left: 12, right: 12,bottom: 12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                state.notes[index].headLine,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    state.notes[index].headLine,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  IconButton(onPressed: (){
+                                    context.read<GetNoteCubit>().deleteNote(state.notes[index].noteId!);
+
+                                  }, icon: Icon(Icons.delete)),
+
+                                ],
                               ),
                               SizedBox(height: 7),
                               Row(
