@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/logic/login/cubit.dart';
 import 'package:note_app/logic/login/state.dart';
+import 'package:note_app/logic/theme/cubit.dart';
 import 'package:note_app/presintation/screens/sign_up_screen.dart';
 import '../widgets/text_form_filed_widget.dart';
 import 'notes_screen.dart';
@@ -69,6 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       IconButton(onPressed: (){
                         _toggleLanguage(context);
                       }, icon: Icon(Icons.translate),color: Colors.white,),
+                      IconButton(onPressed: (){
+                        context.read<ThemeCubit>().toggleTheme();
+                      }, icon: Icon(Icons.mode_night_outlined),color: Colors.white,),
                       Center(
                         child: Text(
                           "Hi, Welcome Back! ".tr(),
