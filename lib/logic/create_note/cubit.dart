@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/data/note_model.dart';
 import 'package:note_app/logic/create_note/state.dart';
@@ -10,7 +11,7 @@ class CreateNoteCubit extends Cubit <CreateNoteState> {
   Future createNote ({required NoteModel notes})async {
     emit(CreateNoteLoadingState());
     try{
-    final setNote =  await FirebaseFirestore.instance.collection("notes").add(notes.toJson());
+    final setNote =  await FirebaseFirestore.instance.collection("notes").add(notes.toJson(),);
     notes.noteId = setNote.id;
      emit(CreateNoteSuccessState());
       

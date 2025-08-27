@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -240,6 +241,8 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                         description: descController.text,
                                         createdAt: DateTime.now(),
                                         imageUrl: mediaLink,
+                                        userId: FirebaseAuth.instance.currentUser!.uid,
+
                                       ),
                                     );
                                   } else {
@@ -248,6 +251,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                                         headLine: noteAddressController.text,
                                         description: descController.text,
                                         createdAt: DateTime.now(),
+                                        userId: FirebaseAuth.instance.currentUser!.uid,
                                       ),
                                     );
                                   }

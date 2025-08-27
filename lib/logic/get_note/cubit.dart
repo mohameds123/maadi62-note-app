@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/logic/get_note/state.dart';
 import '../../data/note_model.dart';
@@ -10,8 +11,11 @@ class GetNoteCubit extends Cubit<GetNoteState> {
     emit(GetNoteLoadingState());
 
     try {
+      final String userId = FirebaseAuth.instance.currentUser!.uid;
+
       final response = await FirebaseFirestore.instance
           .collection("notes")
+          .where("userId", isEqualTo: userId) // 🔥 filter by userId
           .get();
 
       final finalResult = response.docs.map((doc) {
@@ -28,7 +32,6 @@ class GetNoteCubit extends Cubit<GetNoteState> {
     }
   }
 
-
   Future deleteNote(String noteId) async {
     emit(DeleteNoteLoadingState());
     try {
@@ -39,7 +42,7 @@ class GetNoteCubit extends Cubit<GetNoteState> {
 
       emit(DeleteNoteSuccessState());
 
-      await getNotes();
+      await getNotes(); // reload after delete
     } catch (e) {
       print("DELETE NOTE ERROR ===== $e");
       emit(DeleteNoteErrorState(em: e.toString()));

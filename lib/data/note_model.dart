@@ -4,6 +4,7 @@ class NoteModel {
   String description;
   DateTime createdAt;
   String? imageUrl;
+  String ? userId;
 
   NoteModel({
     this.noteId,
@@ -11,11 +12,13 @@ class NoteModel {
     required this.description,
     required this.createdAt,
     this.imageUrl,
+    this.userId
   });
 
   factory NoteModel.fromJson(Map<String, dynamic> json) {
     return NoteModel(
       noteId: json['noteId'],
+      userId: json['userId'],
       headLine: json['headLine'] as String,
       description: json['description'] as String,
       imageUrl: json['imageUrl'] ?? "",
@@ -26,6 +29,7 @@ class NoteModel {
   Map<String, dynamic> toJson() {
     return {
       'headLine': headLine,
+      'userId': userId,
       'description': description,
       'imageUrl': imageUrl ?? "",
       'createdAt': createdAt.toIso8601String(),
